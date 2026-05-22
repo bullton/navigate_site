@@ -12,8 +12,7 @@ const API_PORT = process.env.API_PORT || 5000;
 
 const apiProxy = createProxyMiddleware({
   target: `http://127.0.0.1:${API_PORT}`,
-  changeOrigin: true,
-  pathRewrite: { '^/api': '' }
+  changeOrigin: true
 });
 
 app.use('/api', apiProxy);

@@ -20,6 +20,11 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/admin/apps', appRoutes);
 app.use('/api/admin/categories', categoryRoutes);
 
+app.use(publicRoutes);
+app.use('/admin', adminRoutes);
+app.use('/admin/apps', appRoutes);
+app.use('/admin/categories', categoryRoutes);
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
