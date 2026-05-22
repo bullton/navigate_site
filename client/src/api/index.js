@@ -44,16 +44,16 @@ export const adminAPI = {
   getMe: () => api.get('/admin/me'),
   getStats: () => api.get('/admin/stats'),
 
-  getApps: () => api.get('/apps'),
-  createApp: (data) => api.post('/apps', data),
-  updateApp: (id, data) => api.put(`/apps/${id}`, data),
-  deleteApp: (id) => api.delete(`/apps/${id}`),
-  toggleAppStatus: (id) => api.patch(`/apps/${id}/toggle-status`),
+  getApps: () => api.get('/admin/apps'),
+  createApp: (data) => api.post('/admin/apps', data),
+  updateApp: (id, data) => api.put(`/admin/apps/${id}`, data),
+  deleteApp: (id) => api.delete(`/admin/apps/${id}`),
+  toggleAppStatus: (id) => api.patch(`/admin/apps/${id}/toggle-status`),
 
-  getCategories: () => api.get('/categories'),
-  createCategory: (data) => api.post('/categories', data),
-  updateCategory: (id, data) => api.put(`/categories/${id}`, data),
-  deleteCategory: (id) => api.delete(`/categories/${id}`),
+  getCategories: () => api.get('/admin/categories'),
+  createCategory: (data) => api.post('/admin/categories', data),
+  updateCategory: (id, data) => api.put(`/admin/categories/${id}`, data),
+  deleteCategory: (id) => api.delete(`/admin/categories/${id}`),
 };
 
 export default api;
