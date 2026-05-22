@@ -10,25 +10,18 @@ const app = express();
 const clientDist = process.env.CLIENT_DIST || path.join(__dirname, '..', 'client', 'dist');
 const API_PORT = process.env.API_PORT || 5000;
 
-app.use((req, res, next) => {
-  if (req.path.startsWith('/api')) {
-    return createProxyMiddleware({
-      target: `http://127.0.0.1:${API_PORT}`,
-      changeOrigin: true,
-      pathRewrite: { '^/api': '/api' }
-    })(req, res, next);
-  }
-  next();
+const apiProxy = createProxyMiddleware({
+  target: `http://127.0.0.1:${API_PORT}`,
+  changeOrigin: true,
+  pathRewrite: { '^/api': '' }
 });
+
+app.use('/api', apiProxy);
 
 app.use(express.static(clientDist));
 
-app.use((req, res, next) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(clientDist, 'index.html'));
-  } else {
-    next();
-  }
+app.get('*', (req, res) => {
+  res.sendFile(path.join(clientDist, 'index.html'));
 });
 
 const PORT = process.env.PORT || 5001;
