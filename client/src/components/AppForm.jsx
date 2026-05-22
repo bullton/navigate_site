@@ -61,10 +61,14 @@ export default function AppForm({ app = null }) {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value
-    });
+    let processedValue = type === 'checkbox' ? checked : value;
+    
+    if (name === 'name' && !isEditing) {
+      const slug = value.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+      setFormData({ ...formData, name: value, slug });
+    } else {
+      setFormData({ ...formData, [name]: processedValue });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -149,8 +153,11 @@ export default function AppForm({ app = null }) {
               onChange={handleChange}
               className="input-field"
               placeholder="chatgpt"
+              pattern="[a-z0-9-]+"
+              title="小写字母、数字和连字符"
               required
             />
+            <p className="text-xs text-gray-500 mt-1">用于 URL，只能包含小写字母、数字和连字符</p>
           </div>
 
           <div>
