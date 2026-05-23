@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save, Plus, Trash2, GripVertical, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, Save, Plus, Trash2 } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { useAdminStore } from '../stores/index.js';
 
@@ -38,7 +38,6 @@ export default function AppForm({ app = null }) {
 
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
-  const [showPasswords, setShowPasswords] = useState({});
 
   useEffect(() => {
     fetchAdminCategories();
@@ -57,7 +56,7 @@ export default function AppForm({ app = null }) {
         status: app.status || 'active',
         featured: app.featured || false,
         sortOrder: app.sortOrder || 0,
-        credentials: app.credentials || []
+        credentials: (app.credentials || []).map(c => ({ ...c, isPassword: c.isPassword !== false }))
       });
     }
   }, [app]);
@@ -107,7 +106,7 @@ export default function AppForm({ app = null }) {
       ...formData,
       credentials: [
         ...formData.credentials,
-        { name: '', value: '', visibility: 'public', order: formData.credentials.length }
+        { name: '', value: '', visibility: 'public', order: formData.credentials.length, isPassword: true }
       ]
     });
   };
@@ -348,7 +347,7 @@ export default function AppForm({ app = null }) {
                     <input
                       list={`cred-name-list-${index}`}
                       type="text"
-                      placeholder="字段名称（如：API Key、密码）"
+                      placeholder="字段名称"
                       value={cred.name}
                       onChange={(e) => updateCredential(index, 'name', e.target.value)}
                       className="input-field text-sm"
@@ -357,29 +356,24 @@ export default function AppForm({ app = null }) {
                       <option value="用户名" />
                       <option value="密码" />
                       <option value="Token" />
-                      <option value="API Key" />
-                      <option value="Secret Key" />
-                      <option value="Access Token" />
-                      <option value="API Secret" />
-                      <option value="Bearer Token" />
-                      <option value="Client ID" />
-                      <option value="Client Secret" />
                     </datalist>
                     <div className="flex items-center space-x-2">
                       <input
-                        type={showPasswords[index] ? 'text' : 'password'}
+                        type={cred.isPassword ? 'password' : 'text'}
                         placeholder="字段值"
                         value={cred.value}
                         onChange={(e) => updateCredential(index, 'value', e.target.value)}
                         className="input-field text-sm flex-1"
                       />
-                      <button
-                        type="button"
-                        onClick={() => setShowPasswords({ ...showPasswords, [index]: !showPasswords[index] })}
-                        className="p-2 text-gray-400 hover:text-white transition-colors"
-                      >
-                        {showPasswords[index] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </button>
+                      <label className="flex items-center space-x-2 cursor-pointer px-2 py-1 rounded hover:bg-white/5">
+                        <input
+                          type="checkbox"
+                          checked={cred.isPassword}
+                          onChange={(e) => updateCredential(index, 'isPassword', e.target.checked)}
+                          className="w-4 h-4 text-accent-primary"
+                        />
+                        <span className="text-sm text-gray-400">隐藏</span>
+                      </label>
                     </div>
                     <div className="flex items-center space-x-4">
                       <label className="flex items-center space-x-2 cursor-pointer">
