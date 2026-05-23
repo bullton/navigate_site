@@ -43,20 +43,24 @@ export default function CredentialsModal({ app, onClose }) {
               <div>
                 <h3 className="text-sm font-medium text-gray-400 mb-2">公开信息</h3>
                 <div className="space-y-2">
-                  {publicCredentials.map((cred, index) => (
+                  {publicCredentials.map((cred, index) => {
+                    const isHidden = cred.isPassword && !showValues[`public_${index}`];
+                    return (
                     <div key={index} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                       <div className="flex-1 min-w-0">
                         <p className="text-sm text-gray-400">{cred.name}</p>
                         <div className="flex items-center space-x-2 mt-1">
                           <code className="text-xs text-white truncate max-w-[150px]">
-                            {showValues[`public_${index}`] ? cred.value : '••••••••'}
+                            {isHidden ? '••••••••' : cred.value}
                           </code>
-                          <button
-                            onClick={() => toggleShow(`public_${index}`)}
-                            className="p-1 text-gray-500 hover:text-white transition-colors"
-                          >
-                            {showValues[`public_${index}`] ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
-                          </button>
+                          {cred.isPassword && (
+                            <button
+                              onClick={() => toggleShow(`public_${index}`)}
+                              className="p-1 text-gray-500 hover:text-white transition-colors"
+                            >
+                              {showValues[`public_${index}`] ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+                            </button>
+                          )}
                         </div>
                       </div>
                       <button
@@ -70,7 +74,8 @@ export default function CredentialsModal({ app, onClose }) {
                         )}
                       </button>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -83,20 +88,24 @@ export default function CredentialsModal({ app, onClose }) {
                 </h3>
                 {isAuthenticated ? (
                   <div className="space-y-2">
-                    {privateCredentials.map((cred, index) => (
+                    {privateCredentials.map((cred, index) => {
+                      const isHidden = cred.isPassword && !showValues[`private_${index}`];
+                      return (
                       <div key={index} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                         <div className="flex-1 min-w-0">
                           <p className="text-sm text-gray-400">{cred.name}</p>
                           <div className="flex items-center space-x-2 mt-1">
                             <code className="text-xs text-white truncate max-w-[150px]">
-                              {showValues[`private_${index}`] ? cred.value : '••••••••'}
+                              {isHidden ? '••••••••' : cred.value}
                             </code>
-                            <button
-                              onClick={() => toggleShow(`private_${index}`)}
-                              className="p-1 text-gray-500 hover:text-white transition-colors"
-                            >
-                              {showValues[`private_${index}`] ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
-                            </button>
+                            {cred.isPassword && (
+                              <button
+                                onClick={() => toggleShow(`private_${index}`)}
+                                className="p-1 text-gray-500 hover:text-white transition-colors"
+                              >
+                                {showValues[`private_${index}`] ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+                              </button>
+                            )}
                           </div>
                         </div>
                         <button
@@ -110,7 +119,8 @@ export default function CredentialsModal({ app, onClose }) {
                           )}
                         </button>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
