@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import AdminLogin from './pages/AdminLogin.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
@@ -10,9 +10,8 @@ import { useEffect } from 'react';
 import { useAdminStore } from './stores/index.js';
 
 function AppEditWrapper() {
+  const { id } = useParams();
   const { apps, fetchAdminApps } = useAdminStore();
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id') || window.location.pathname.split('/').pop();
   const app = apps.find((a) => a._id === id);
 
   useEffect(() => {
