@@ -17,6 +17,8 @@ const STATUS_OPTIONS = [
   { value: 'maintenance', label: '维护中' }
 ];
 
+const CRED_NAME_OPTIONS = ['用户名', '密码', 'Token'];
+
 export default function AppForm({ app = null }) {
   const navigate = useNavigate();
   const { categories, fetchAdminCategories, createApp, updateApp } = useAdminStore();
@@ -340,70 +342,83 @@ export default function AppForm({ app = null }) {
           {formData.credentials.length === 0 ? (
             <p className="text-sm text-gray-500">暂无隐私信息，点击上方按钮添加</p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {formData.credentials.map((cred, index) => (
-                <div key={index} className="flex items-start space-x-3 p-3 bg-white/5 rounded-lg">
-                  <div className="flex flex-col space-y-1 flex-1">
-                    <input
-                      list={`cred-name-${index}`}
-                      type="text"
-                      placeholder="字段名称"
-                      value={cred.name}
-                      onChange={(e) => updateCredential(index, 'name', e.target.value)}
-                      className="input-field text-sm"
-                    />
-                  </div>
-                  <datalist id={`cred-name-${index}`}>
-                    <option value="用户名" />
-                    <option value="密码" />
-                    <option value="Token" />
-                  </datalist>
-                  <div className="flex items-center space-x-2">
-                      <input
-                        type={cred.isPassword ? 'password' : 'text'}
-                        placeholder="字段值"
-                        value={cred.value}
-                        onChange={(e) => updateCredential(index, 'value', e.target.value)}
-                        className="input-field text-sm flex-1"
-                      />
-                      <label className="flex items-center space-x-2 cursor-pointer px-2 py-1 rounded hover:bg-white/5">
+                <div key={index} className="p-4 bg-white/5 rounded-lg">
+                  <div className="flex items-start gap-4">
+                    <div className="flex-1">
+                      <div className="mb-3">
+                        <select
+                          value={cred.name}
+                          onChange={(e) => updateCredential(index, 'name', e.target.value)}
+                          className="input-field text-sm"
+                        >
+                          <option value="">选择或输入字段名称</option>
+                          {CRED_NAME_OPTIONS.map(opt => (
+                            <option key={opt} value={opt}>{opt}</option>
+                          ))}
+                        </select>
                         <input
-                          type="checkbox"
-                          checked={cred.isPassword}
-                          onChange={(e) => updateCredential(index, 'isPassword', e.target.checked)}
-                          className="w-4 h-4 text-accent-primary"
+                          type="text"
+                          value={cred.name}
+                          onChange={(e) => updateCredential(index, 'name', e.target.value)}
+                          className="input-field text-sm mt-2"
+                          placeholder="或直接输入自定义名称"
+                          list={`cred-name-${index}`}
                         />
-                        <span className="text-sm text-gray-400">隐藏</span>
-                      </label>
+                        <datalist id={`cred-name-${index}`}>
+                          {CRED_NAME_OPTIONS.map(opt => (
+                            <option key={opt} value={opt} />
+                          ))}
+                        </datalist>
+                      </div>
+                      <div className="flex items-center space-x-2 mb-3">
+                        <input
+                          type={cred.isPassword ? 'password' : 'text'}
+                          placeholder="字段值"
+                          value={cred.value}
+                          onChange={(e) => updateCredential(index, 'value', e.target.value)}
+                          className="input-field text-sm flex-1"
+                        />
+                        <label className="flex items-center space-x-2 cursor-pointer px-2 py-1 rounded hover:bg-white/5">
+                          <input
+                            type="checkbox"
+                            checked={cred.isPassword}
+                            onChange={(e) => updateCredential(index, 'isPassword', e.target.checked)}
+                            className="w-4 h-4 text-accent-primary"
+                          />
+                          <span className="text-sm text-gray-400">隐藏</span>
+                        </label>
+                      </div>
+                      <div className="flex items-center space-x-4">
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            checked={cred.visibility === 'public'}
+                            onChange={() => updateCredential(index, 'visibility', 'public')}
+                            className="w-4 h-4 text-accent-primary"
+                          />
+                          <span className="text-sm text-gray-400">公开</span>
+                        </label>
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            checked={cred.visibility === 'private'}
+                            onChange={() => updateCredential(index, 'visibility', 'private')}
+                            className="w-4 h-4 text-accent-primary"
+                          />
+                          <span className="text-sm text-gray-400">私隐（仅管理员可见）</span>
+                        </label>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-4">
-                      <label className="flex items-center space-x-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          checked={cred.visibility === 'public'}
-                          onChange={() => updateCredential(index, 'visibility', 'public')}
-                          className="w-4 h-4 text-accent-primary"
-                        />
-                        <span className="text-sm text-gray-400">公开</span>
-                      </label>
-                      <label className="flex items-center space-x-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          checked={cred.visibility === 'private'}
-                          onChange={() => updateCredential(index, 'visibility', 'private')}
-                          className="w-4 h-4 text-accent-primary"
-                        />
-                        <span className="text-sm text-gray-400">私隐（仅管理员可见）</span>
-                      </label>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeCredential(index)}
+                      className="p-2 text-gray-400 hover:text-red-400 transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => removeCredential(index)}
-                    className="p-2 text-gray-400 hover:text-red-400 transition-colors"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
                 </div>
               ))}
             </div>
