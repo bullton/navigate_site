@@ -65,6 +65,10 @@ const appSchema = new mongoose.Schema({
       enum: ['public', 'private'],
       default: 'public'
     },
+    isPassword: {
+      type: Boolean,
+      default: true
+    },
     order: {
       type: Number,
       default: 0
