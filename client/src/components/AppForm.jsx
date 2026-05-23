@@ -84,7 +84,8 @@ export default function AppForm({ app = null }) {
       category: formData.category || null,
       tags: formData.tags
         ? formData.tags.split(',').map((t) => t.trim()).filter(Boolean)
-        : []
+        : [],
+      credentials: formData.credentials || []
     };
 
     const result = isEditing
