@@ -127,6 +127,7 @@ export const useAdminStore = create((set, get) => ({
   stats: null,
   loading: false,
   error: null,
+  isAuthenticated: !!localStorage.getItem('adminToken'),
 
   fetchAdminApps: async () => {
     set({ loading: true, error: null });
@@ -265,4 +266,6 @@ export const useAdminStore = create((set, get) => ({
       };
     }
   },
+
+  setAuthenticated: (value) => set({ isAuthenticated: value }),
 }));

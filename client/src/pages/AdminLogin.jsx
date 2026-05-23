@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
-import { useAuthStore } from '../stores/index.js';
+import { useAuthStore, useAdminStore } from '../stores/index.js';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
   const { login, loading, error, isAuthenticated, clearError } = useAuthStore();
+  const { setAuthenticated } = useAdminStore();
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
+      setAuthenticated(true);
       navigate('/admin/dashboard');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, setAuthenticated]);
 
   useEffect(() => {
     return () => clearError();
@@ -23,6 +25,7 @@ export default function AdminLogin() {
     e.preventDefault();
     const success = await login(formData);
     if (success) {
+      setAuthenticated(true);
       navigate('/admin/dashboard');
     }
   };

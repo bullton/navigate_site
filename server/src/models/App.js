@@ -50,6 +50,26 @@ const appSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  credentials: [{
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    value: {
+      type: String,
+      default: ''
+    },
+    visibility: {
+      type: String,
+      enum: ['public', 'private'],
+      default: 'public'
+    },
+    order: {
+      type: Number,
+      default: 0
+    }
+  }],
   metadata: {
     viewCount: {
       type: Number,

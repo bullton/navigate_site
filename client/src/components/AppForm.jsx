@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, Plus, Trash2, GripVertical, Eye, EyeOff } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import { useAdminStore } from '../stores/index.js';
 
@@ -32,11 +32,13 @@ export default function AppForm({ app = null }) {
     tags: '',
     status: 'active',
     featured: false,
-    sortOrder: 0
+    sortOrder: 0,
+    credentials: []
   });
 
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [showPasswords, setShowPasswords] = useState({});
 
   useEffect(() => {
     fetchAdminCategories();
@@ -54,7 +56,8 @@ export default function AppForm({ app = null }) {
         tags: app.tags?.join(', ') || '',
         status: app.status || 'active',
         featured: app.featured || false,
-        sortOrder: app.sortOrder || 0
+        sortOrder: app.sortOrder || 0,
+        credentials: app.credentials || []
       });
     }
   }, [app]);
@@ -96,6 +99,29 @@ export default function AppForm({ app = null }) {
     } else {
       setMessage({ type: 'error', text: result.message });
     }
+  };
+
+  const addCredential = () => {
+    setFormData({
+      ...formData,
+      credentials: [
+        ...formData.credentials,
+        { name: '', value: '', visibility: 'public', order: formData.credentials.length }
+      ]
+    });
+  };
+
+  const updateCredential = (index, field, value) => {
+    const newCredentials = [...formData.credentials];
+    newCredentials[index][field] = value;
+    setFormData({ ...formData, credentials: newCredentials });
+  };
+
+  const removeCredential = (index) => {
+    setFormData({
+      ...formData,
+      credentials: formData.credentials.filter((_, i) => i !== index)
+    });
   };
 
   return (
@@ -296,6 +322,83 @@ export default function AppForm({ app = null }) {
               </span>
             </label>
           </div>
+        </div>
+
+        <div className="mt-8 pt-8 border-t border-white/10">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-medium text-white">隐私信息</h3>
+            <button
+              type="button"
+              onClick={addCredential}
+              className="flex items-center space-x-2 px-3 py-1.5 text-sm bg-accent-primary/10 text-accent-primary rounded-lg hover:bg-accent-primary/20 transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              <span>添加字段</span>
+            </button>
+          </div>
+
+          {formData.credentials.length === 0 ? (
+            <p className="text-sm text-gray-500">暂无隐私信息，点击上方按钮添加</p>
+          ) : (
+            <div className="space-y-3">
+              {formData.credentials.map((cred, index) => (
+                <div key={index} className="flex items-start space-x-3 p-3 bg-white/5 rounded-lg">
+                  <div className="flex flex-col space-y-1 flex-1">
+                    <input
+                      type="text"
+                      placeholder="字段名称（如：API Key、密码）"
+                      value={cred.name}
+                      onChange={(e) => updateCredential(index, 'name', e.target.value)}
+                      className="input-field text-sm"
+                    />
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type={showPasswords[index] ? 'text' : 'password'}
+                        placeholder="字段值"
+                        value={cred.value}
+                        onChange={(e) => updateCredential(index, 'value', e.target.value)}
+                        className="input-field text-sm flex-1"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPasswords({ ...showPasswords, [index]: !showPasswords[index] })}
+                        className="p-2 text-gray-400 hover:text-white transition-colors"
+                      >
+                        {showPasswords[index] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          checked={cred.visibility === 'public'}
+                          onChange={() => updateCredential(index, 'visibility', 'public')}
+                          className="w-4 h-4 text-accent-primary"
+                        />
+                        <span className="text-sm text-gray-400">公开</span>
+                      </label>
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          checked={cred.visibility === 'private'}
+                          onChange={() => updateCredential(index, 'visibility', 'private')}
+                          className="w-4 h-4 text-accent-primary"
+                        />
+                        <span className="text-sm text-gray-400">私隐（仅管理员可见）</span>
+                      </label>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeCredential(index)}
+                    className="p-2 text-gray-400 hover:text-red-400 transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="mt-8 flex justify-end space-x-4">

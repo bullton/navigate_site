@@ -1,7 +1,7 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { LayoutDashboard, AppWindow, FolderOpen, LogOut, ChevronRight } from 'lucide-react';
-import { useAuthStore } from '../stores/index.js';
+import { useAuthStore, useAdminStore } from '../stores/index.js';
 
 const navItems = [
   { path: '/admin/dashboard', label: '仪表板', icon: LayoutDashboard },
@@ -13,6 +13,7 @@ export default function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, checkAuth, logout } = useAuthStore();
+  const { setAuthenticated } = useAdminStore();
 
   useEffect(() => {
     checkAuth();
@@ -26,6 +27,7 @@ export default function AdminLayout() {
 
   const handleLogout = async () => {
     await logout();
+    setAuthenticated(false);
     navigate('/admin');
   };
 
