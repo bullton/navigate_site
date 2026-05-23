@@ -348,19 +348,22 @@ export default function AppForm({ app = null }) {
                   <div className="flex items-start gap-4">
                     <div className="flex-1">
                       <div className="mb-3">
-                        <input
-                          type="text"
-                          value={cred.name}
-                          onChange={(e) => updateCredential(index, 'name', e.target.value)}
-                          className="input-field text-sm"
-                          placeholder="选择或输入字段名称"
-                          list={`cred-name-${index}`}
-                        />
-                        <datalist id={`cred-name-${index}`}>
-                          {CRED_NAME_OPTIONS.map(opt => (
-                            <option key={opt} value={opt} />
-                          ))}
-                        </datalist>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={cred.name}
+                            onChange={(e) => updateCredential(index, 'name', e.target.value)}
+                            className="input-field text-sm w-full"
+                            placeholder="选择或输入字段名称"
+                            autoComplete="new-password"
+                            list={`cred-name-${index}`}
+                          />
+                          <datalist id={`cred-name-${index}`}>
+                            {CRED_NAME_OPTIONS.map(opt => (
+                              <option key={opt} value={opt} />
+                            ))}
+                          </datalist>
+                        </div>
                       </div>
                       <div className="flex items-center space-x-2 mb-3">
                         <input
@@ -369,6 +372,7 @@ export default function AppForm({ app = null }) {
                           value={cred.value}
                           onChange={(e) => updateCredential(index, 'value', e.target.value)}
                           className="input-field text-sm flex-1"
+                          autoComplete="new-password"
                         />
                         <label className="flex items-center space-x-2 cursor-pointer px-2 py-1 rounded hover:bg-white/5">
                           <input
