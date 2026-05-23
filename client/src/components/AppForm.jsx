@@ -348,22 +348,12 @@ export default function AppForm({ app = null }) {
                   <div className="flex items-start gap-4">
                     <div className="flex-1">
                       <div className="mb-3">
-                        <select
-                          value={cred.name}
-                          onChange={(e) => updateCredential(index, 'name', e.target.value)}
-                          className="input-field text-sm"
-                        >
-                          <option value="">选择或输入字段名称</option>
-                          {CRED_NAME_OPTIONS.map(opt => (
-                            <option key={opt} value={opt}>{opt}</option>
-                          ))}
-                        </select>
                         <input
                           type="text"
                           value={cred.name}
                           onChange={(e) => updateCredential(index, 'name', e.target.value)}
-                          className="input-field text-sm mt-2"
-                          placeholder="或直接输入自定义名称"
+                          className="input-field text-sm"
+                          placeholder="选择或输入字段名称"
                           list={`cred-name-${index}`}
                         />
                         <datalist id={`cred-name-${index}`}>
