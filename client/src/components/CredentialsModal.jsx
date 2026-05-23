@@ -8,9 +8,22 @@ export default function CredentialsModal({ app, onClose }) {
   const [showValues, setShowValues] = useState({});
 
   const handleCopy = async (value, index) => {
-    await navigator.clipboard.writeText(value);
-    setCopiedIndex(index);
-    setTimeout(() => setCopiedIndex(null), 2000);
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2000);
+    } catch (err) {
+      const textArea = document.createElement('textarea');
+      textArea.value = value;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2000);
+    }
   };
 
   const toggleShow = (index) => {
