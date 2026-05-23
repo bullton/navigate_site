@@ -345,19 +345,20 @@ export default function AppForm({ app = null }) {
                 <div key={index} className="flex items-start space-x-3 p-3 bg-white/5 rounded-lg">
                   <div className="flex flex-col space-y-1 flex-1">
                     <input
-                      list={`cred-name-list-${index}`}
+                      list={`cred-name-${index}`}
                       type="text"
                       placeholder="字段名称"
                       value={cred.name}
                       onChange={(e) => updateCredential(index, 'name', e.target.value)}
                       className="input-field text-sm"
                     />
-                    <datalist id={`cred-name-list-${index}`}>
-                      <option value="用户名" />
-                      <option value="密码" />
-                      <option value="Token" />
-                    </datalist>
-                    <div className="flex items-center space-x-2">
+                  </div>
+                  <datalist id={`cred-name-${index}`}>
+                    <option value="用户名" />
+                    <option value="密码" />
+                    <option value="Token" />
+                  </datalist>
+                  <div className="flex items-center space-x-2">
                       <input
                         type={cred.isPassword ? 'password' : 'text'}
                         placeholder="字段值"
