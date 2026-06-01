@@ -38,11 +38,13 @@ export default function AdminLayout() {
       <aside className="w-64 bg-dark-800 border-r border-white/10 flex flex-col">
         <div className="p-6 border-b border-white/10">
           <Link to="/" className="flex items-center space-x-2">
-            <img
-              src="/images/logo.jpeg"
-              alt="AppHub"
-              className="h-10 w-auto"
-            />
+            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center p-1.5">
+              <img
+                src="/images/logo.png"
+                alt="AppHub"
+                className="w-full h-full object-contain"
+              />
+            </div>
             <span className="text-xl font-bold text-white">AppHub</span>
           </Link>
           <p className="text-sm text-gray-500 mt-2">管理后台</p>

@@ -16,11 +16,13 @@ export default function Navbar({ apps, onSearch }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-2">
-            <img
-              src="/images/logo.jpeg"
-              alt="AppHub"
-              className="h-10 w-auto"
-            />
+            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center p-1.5">
+              <img
+                src="/images/logo.png"
+                alt="AppHub"
+                className="w-full h-full object-contain"
+              />
+            </div>
             <span className="text-xl font-bold text-white">AppHub</span>
           </Link>
 
