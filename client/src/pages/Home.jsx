@@ -5,6 +5,7 @@ import CategoryFilter from '../components/CategoryFilter.jsx';
 import AppCard from '../components/AppCard.jsx';
 import Footer from '../components/Footer.jsx';
 import Calendar from '../components/Calendar.jsx';
+import TokenPlan from '../components/TokenPlan.jsx';
 import { Sparkles } from 'lucide-react';
 
 export default function Home() {
@@ -54,7 +55,8 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 flex gap-4">
+            <TokenPlan />
             <Calendar />
           </div>
         </section>

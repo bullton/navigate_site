@@ -6,6 +6,7 @@ import publicRoutes from './routes/publicRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import appRoutes from './routes/appRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
+import tokenPlanRoutes from './routes/tokenPlanRoutes.js';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use('/api', publicRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/apps', appRoutes);
 app.use('/api/admin/categories', categoryRoutes);
+app.use('/api/token', tokenPlanRoutes);
 
 app.use(publicRoutes);
 app.use('/admin', adminRoutes);
