@@ -6,6 +6,7 @@ import AppCard from '../components/AppCard.jsx';
 import Footer from '../components/Footer.jsx';
 import Calendar from '../components/Calendar.jsx';
 import TokenPlan from '../components/TokenPlan.jsx';
+import LinksBar from '../components/LinksBar.jsx';
 import { Sparkles } from 'lucide-react';
 
 export default function Home() {
@@ -88,6 +89,8 @@ export default function Home() {
             ))}
           </section>
         )}
+
+        <LinksBar />
       </main>
 
       <Footer />

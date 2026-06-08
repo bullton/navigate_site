@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useAdminStore } from '../stores/index.js';
-import { Plus, Edit, Trash2, Search, ExternalLink, Key } from 'lucide-react';
+import { Plus, Edit, Trash2, Search, ExternalLink } from 'lucide-react';
 
 export default function AdminLinks() {
-  const { apps, fetchAdminApps } = useAdminStore();
   const [links, setLinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,14 +11,12 @@ export default function AdminLinks() {
   const [formData, setFormData] = useState({
     name: '',
     url: '',
-    app: '',
     status: 'active',
     credentials: []
   });
   const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
-    fetchAdminApps();
     fetchLinks();
   }, []);
 
@@ -82,7 +78,6 @@ export default function AdminLinks() {
     setFormData({
       name: link.name,
       url: link.url,
-      app: link.app._id,
       status: link.status,
       credentials: link.credentials || []
     });
@@ -91,7 +86,7 @@ export default function AdminLinks() {
 
   const resetForm = () => {
     setEditingLink(null);
-    setFormData({ name: '', url: '', app: '', status: 'active', credentials: [] });
+    setFormData({ name: '', url: '', status: 'active', credentials: [] });
   };
 
   const addCredential = () => {
@@ -115,9 +110,7 @@ export default function AdminLinks() {
   };
 
   const filteredLinks = links.filter(
-    (link) =>
-      link.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      link.app?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+    (link) => link.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -160,7 +153,6 @@ export default function AdminLinks() {
               <thead>
                 <tr className="border-b border-white/10">
                   <th className="text-left text-sm font-medium text-gray-400 px-6 py-4">链接名称</th>
-                  <th className="text-left text-sm font-medium text-gray-400 px-6 py-4">所属应用</th>
                   <th className="text-left text-sm font-medium text-gray-400 px-6 py-4">状态</th>
                   <th className="text-left text-sm font-medium text-gray-400 px-6 py-4">隐私信息</th>
                   <th className="text-right text-sm font-medium text-gray-400 px-6 py-4">操作</th>
@@ -176,9 +168,6 @@ export default function AdminLinks() {
                           <p className="text-xs text-gray-500 truncate max-w-[200px]">{link.url}</p>
                         </div>
                       </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="text-sm text-gray-400">{link.app?.name || '-'}</span>
                     </td>
                     <td className="px-6 py-4">
                       <span className={`px-2 py-1 text-xs rounded-full ${
@@ -242,17 +231,6 @@ export default function AdminLinks() {
                 <input type="url" required value={formData.url}
                   onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                   className="input-field" placeholder="https://..." />
-              </div>
-              <div>
-                <label className="block text-sm text-gray-400 mb-2">所属应用</label>
-                <select required value={formData.app}
-                  onChange={(e) => setFormData({ ...formData, app: e.target.value })}
-                  className="input-field">
-                  <option value="">选择应用</option>
-                  {apps.map((app) => (
-                    <option key={app._id} value={app._id}>{app.name}</option>
-                  ))}
-                </select>
               </div>
               <div>
                 <label className="block text-sm text-gray-400 mb-2">状态</label>

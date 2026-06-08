@@ -1,8 +1,8 @@
 import express from 'express';
-import { getLinksByApp } from '../controllers/linkController.js';
+import { getAllLinks } from '../controllers/linkController.js';
 
 const router = express.Router();
 
-router.get('/app/:appId', getLinksByApp);
+router.get('/', getAllLinks);
 
 export default router;

@@ -12,11 +12,6 @@ const linkSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  app: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'App',
-    required: true
-  },
   credentials: [{
     name: {
       type: String,
@@ -47,7 +42,6 @@ const linkSchema = new mongoose.Schema({
   collection: 'nav_links'
 });
 
-linkSchema.index({ app: 1 });
 linkSchema.index({ status: 1 });
 linkSchema.index({ sortOrder: 1 });
 

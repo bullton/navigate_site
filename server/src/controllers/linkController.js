@@ -1,20 +1,8 @@
 import Link from '../models/Link.js';
 
-export const getLinksByApp = async (req, res) => {
-  try {
-    const { appId } = req.params;
-    const links = await Link.find({ app: appId, status: 'active' })
-      .sort({ sortOrder: 1, createdAt: -1 });
-    res.json({ success: true, data: links });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
-
 export const getAllLinks = async (req, res) => {
   try {
-    const links = await Link.find()
-      .populate('app', 'name')
+    const links = await Link.find({ status: 'active' })
       .sort({ sortOrder: 1, createdAt: -1 });
     res.json({ success: true, data: links });
   } catch (error) {
