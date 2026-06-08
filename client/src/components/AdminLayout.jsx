@@ -1,11 +1,12 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { LayoutDashboard, AppWindow, FolderOpen, LogOut, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, AppWindow, FolderOpen, LogOut, ChevronRight, Link as LinkIcon } from 'lucide-react';
 import { useAuthStore, useAdminStore } from '../stores/index.js';
 
 const navItems = [
   { path: '/admin/dashboard', label: '仪表板', icon: LayoutDashboard },
   { path: '/admin/apps', label: '应用管理', icon: AppWindow },
+  { path: '/admin/links', label: '链接管理', icon: LinkIcon },
   { path: '/admin/categories', label: '分类管理', icon: FolderOpen },
 ];
 

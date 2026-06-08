@@ -4,6 +4,7 @@ import AdminLogin from './pages/AdminLogin.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import AdminApps from './pages/AdminApps.jsx';
 import AdminCategories from './pages/AdminCategories.jsx';
+import AdminLinks from './pages/AdminLinks.jsx';
 import AdminLayout from './components/AdminLayout.jsx';
 import AppForm from './components/AppForm.jsx';
 import { useEffect } from 'react';
@@ -36,6 +37,7 @@ function App() {
           <Route path="/admin/apps/new" element={<AppForm />} />
           <Route path="/admin/apps/:id/edit" element={<AppEditWrapper />} />
           <Route path="/admin/categories" element={<AdminCategories />} />
+          <Route path="/admin/links" element={<AdminLinks />} />
         </Route>
       </Routes>
     </BrowserRouter>

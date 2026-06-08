@@ -7,6 +7,8 @@ import adminRoutes from './routes/adminRoutes.js';
 import appRoutes from './routes/appRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import tokenPlanRoutes from './routes/tokenPlanRoutes.js';
+import linkRoutes from './routes/linkRoutes.js';
+import adminLinkRoutes from './routes/adminLinkRoutes.js';
 
 dotenv.config();
 
@@ -20,12 +22,15 @@ app.use('/api', publicRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/apps', appRoutes);
 app.use('/api/admin/categories', categoryRoutes);
+app.use('/api/admin/links', adminLinkRoutes);
 app.use('/api/token', tokenPlanRoutes);
+app.use('/api/links', linkRoutes);
 
 app.use(publicRoutes);
 app.use('/admin', adminRoutes);
 app.use('/admin/apps', appRoutes);
 app.use('/admin/categories', categoryRoutes);
+app.use('/admin/links', adminLinkRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
