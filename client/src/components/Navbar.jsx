@@ -16,7 +16,7 @@ export default function Navbar({ apps, onSearch }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 rounded-lg flex items-center justify-center p-1.5">
+            <div className="w-[58px] h-[33px] rounded-lg flex items-center justify-center">
               <img
                 src="/images/logo.png"
                 alt="AppHub"
