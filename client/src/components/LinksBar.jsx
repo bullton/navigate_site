@@ -25,7 +25,7 @@ export default function LinksBar() {
 
   return (
     <>
-      <div className="mt-8 flex flex-wrap gap-3 justify-center">
+      <div className="mt-8 flex flex-wrap gap-3 justify-start">
         {links.map((link) => (
           <div key={link._id} className="flex items-center bg-dark-700/50 rounded-lg px-3 py-1.5">
             <a
