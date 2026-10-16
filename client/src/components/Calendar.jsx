@@ -87,6 +87,7 @@ export default function Calendar() {
     let iconColor = '';
 
     if (airshow) {
+      cellClass += ' relative';
       title = airshow.label;
       if (airshow.type === 'opening') {
         cellClass += ' bg-blue-500/30';
