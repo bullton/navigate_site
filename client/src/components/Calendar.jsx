@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plane } from 'lucide-react';
 
 const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六'];
 
@@ -21,6 +21,16 @@ const HOLIDAYS_2026 = {
   '10-19': '重阳节翌日',
   '12-25': '圣诞节',
   '12-26': '圣诞节后首个周日',
+};
+
+const AIRSHOW_2026 = {
+  '12-7': { type: 'opening', label: '珠海航展开幕式' },
+  '12-8': { type: 'professional', label: '珠海航展专业日' },
+  '12-9': { type: 'professional', label: '珠海航展专业日' },
+  '12-10': { type: 'professional', label: '珠海航展专业日' },
+  '12-11': { type: 'public', label: '珠海航展公众日' },
+  '12-12': { type: 'public', label: '珠海航展公众日' },
+  '12-13': { type: 'public', label: '珠海航展公众日' },
 };
 
 export default function Calendar() {
@@ -55,6 +65,11 @@ export default function Calendar() {
     return HOLIDAYS_2026[key] || null;
   };
 
+  const getAirshow = (day) => {
+    const key = `${month + 1}-${day}`;
+    return AIRSHOW_2026[key] || null;
+  };
+
   const days = [];
   for (let i = 0; i < startWeekday; i++) {
     days.push(<div key={`empty-${i}`} className="w-8 h-8" />);
@@ -62,14 +77,31 @@ export default function Calendar() {
   for (let day = 1; day <= daysInMonth; day++) {
     const isToday = isCurrentMonth && day === todayDate;
     const holiday = isHoliday(day);
+    const airshow = getAirshow(day);
     const isSunday = new Date(year, month, day).getDay() === 0;
 
     let cellClass = 'w-8 h-8 flex items-center justify-center text-sm rounded-full transition-all cursor-default';
     let textClass = 'text-gray-400';
     let badgeClass = '';
     let title = '';
+    let iconColor = '';
 
-    if (holiday) {
+    if (airshow) {
+      title = airshow.label;
+      if (airshow.type === 'opening') {
+        cellClass += ' bg-blue-500/30';
+        textClass = 'text-blue-400 font-semibold';
+        iconColor = 'text-blue-400';
+      } else if (airshow.type === 'professional') {
+        cellClass += ' bg-blue-500/10';
+        textClass = 'text-blue-300';
+        iconColor = 'text-blue-400';
+      } else if (airshow.type === 'public') {
+        cellClass += ' bg-red-500/10';
+        textClass = 'text-red-300';
+        iconColor = 'text-red-400';
+      }
+    } else if (holiday) {
       cellClass += ' bg-red-500/20';
       textClass = 'text-red-400 font-semibold';
       badgeClass = 'bg-red-500/30';
@@ -90,8 +122,12 @@ export default function Calendar() {
         className={cellClass}
         title={title}
       >
-        <span className={textClass}>{day}</span>
-        {holiday && (
+        {airshow ? (
+          <Plane className={`w-3.5 h-3.5 ${iconColor} ${airshow.type === 'opening' ? 'fill-current' : ''}`} />
+        ) : (
+          <span className={textClass}>{day}</span>
+        )}
+        {holiday && !airshow && (
           <span className={`absolute -top-1 -right-1 w-2 h-2 rounded-full bg-red-500`} />
         )}
       </div>
