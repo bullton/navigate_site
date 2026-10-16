@@ -122,10 +122,9 @@ export default function Calendar() {
         className={cellClass}
         title={title}
       >
-        {airshow ? (
-          <Plane className={`w-3.5 h-3.5 ${iconColor} ${airshow.type === 'opening' ? 'fill-current' : ''}`} />
-        ) : (
-          <span className={textClass}>{day}</span>
+        <span className={textClass}>{day}</span>
+        {airshow && (
+          <Plane className={`absolute -top-1 -right-1 w-2.5 h-2.5 ${iconColor} ${airshow.type === 'opening' ? 'fill-current' : ''}`} />
         )}
         {holiday && !airshow && (
           <span className={`absolute -top-1 -right-1 w-2 h-2 rounded-full bg-red-500`} />
